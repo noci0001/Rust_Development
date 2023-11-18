@@ -1,4 +1,5 @@
 use text::colorizer::*;
+use regex::Regex;
 use std::env;
 use std::fs;
 
@@ -13,9 +14,14 @@ struct Arguments {
 
 fn print_help() {
     //FOR ERROR MESSAGES
-    // eprintln!("{} - replace a string with a new string", "Find and Replace".green());
-    eprintln!("{} - replace a string with a new string", "FIND AND REPLACE");
+    eprintln!("{} - replace a string with a new string", "Find and Replace".green());
+    // eprintln!("{} - replace a string with a new string", "FIND AND REPLACE");
     eprintln!("Usage: <target strubg> <replacement string> <INPUT FILE> <OUTPUT FILE>");
+}
+
+fn replace(target: &str, rep: &str, data: &str) -> Result<String, regex::Error> {
+    let regex = Regex::new(target)?;
+    Ok(regex.replace_all(data, rep).to_string())
 }
 
 fn read_and_write(args: &Arguments) {
@@ -27,7 +33,15 @@ fn read_and_write(args: &Arguments) {
         }
     };
 
-    match fs::write(&args.output_file, &data) {
+    let replace_data = match replace(&args.pattern, &args.replace, &data) {
+        Ok(d) => d,
+        Err(e) => {
+            eprintln!("{} failed to replace text {:?}", "Error", e);
+            std::process::exit(1);
+        }
+    }
+
+    match fs::write(&args.output_file, &replaces_data) {
         Ok(_) => {},
         Err(e) => {
             eprintln!("{} failed to write to output file {}: {:?}", "Error", args.output_file, e);
