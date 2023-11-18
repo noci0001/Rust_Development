@@ -1,13 +1,4 @@
-use text::colorizer::*;
-
-#[derive(Debug)]
-#[allow(dead_code, unused)]
-struct Arguments {
-    pattern: String,
-    replace: String,
-    input_file: String,
-    output_file: String,
-}
+mod find_and_replace;
 
 //The program is taking 4 arguments:
 // String to search
@@ -15,12 +6,5 @@ struct Arguments {
 // Input file
 // Output file
 fn main() {
-    print_help();
-}
-
-fn print_help() {
-    //FOR ERROR MESSAGES
-    eprintln!("{} - replace a string with a new string", "Find and Replace".green());
-    // eprintln!("{} - replace a string with a new string", "Find and Replace");
-    eprintln!("Usage: <target strubg> <replacement string> <INPUT FILE> <OUTPUT FILE>");
+    find_and_replace::run();
 }
