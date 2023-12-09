@@ -1,0 +1,7 @@
+[package]
+name = "procedural_macros"
+version = "0.1.0"
+edition = "2023"
+
+[dependencies]
+macros = { path = "../procedural_macros"}
