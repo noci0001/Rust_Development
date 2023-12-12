@@ -1,9 +1,10 @@
 use std::mem;
 
+#[cfg(test)]
 mod test {
     use super::List;
     // The test should be compiled only if tests are run
-    #[cfg(test)]
+    #[test]
     fn basics() {
         let mut list = List::new();
 
@@ -64,8 +65,17 @@ impl List {
             }
         }
     }
-    // Macro that allows the program to PANIC => crash the program in a controlled manner
     //unimplemented!()
+}
+
+impl Drop for List {
+    fn drop(&mut self) {
+        let mut cur_link = mem::replace(&mut self.head, Link::Empty);
+        
+        while let Link::More(mut boxed_node) = cur_link {
+            cur_link = mem::replace(&mut boxed_node.next, Link::Empty);
+        }
+    }
 }
 
 enum Link {
