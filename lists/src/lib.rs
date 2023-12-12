@@ -19,5 +19,4 @@ mod tests {
 //mod stand for module
 // this line tells Rust that first.rs is something
 //  lib uses.
-pub mod first;
 
